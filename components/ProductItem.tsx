@@ -1,4 +1,13 @@
-import { memo } from "react"
+import React, { memo, useState } from "react"
+// import { AddProductToWishlist } from "./AddProductToWishlist"
+import dynamic from 'next/dynamic'
+import { AddProductToWishlistProps } from "./AddProductToWishlist"
+
+const AddProductToWishlist = dynamic<AddProductToWishlistProps>(() => {
+  return import('./AddProductToWishlist').then(mod => mod.AddProductToWishlist)
+}, {
+  loading: () => <span>Carregando...</span>
+})
 
 /**
  * 1. Pure Functional Components
@@ -16,10 +25,20 @@ interface ProductItemProps {
 }
 
 function ProductItemComponent({ product, onAddToWishlist }: ProductItemProps) {
+  const [isAddingToWishlist, setIsAddingToWishlist] = useState(false)
+
   return (
     <div>
       {product.title} - <strong>{product.price}</strong>
-      <button onClick={() => onAddToWishlist(product.id)}>Add to wishlist</button>
+      <button onClick={() => setIsAddingToWishlist(true)}>Adicionar aos favoritos</button>
+      {
+        isAddingToWishlist && (
+          <AddProductToWishlist
+            onAddToWishlist={() => onAddToWishlist(product.id)}
+            onRequestClose={() => setIsAddingToWishlist(false)}
+          />
+        )
+      }
     </div>
   )
 }
