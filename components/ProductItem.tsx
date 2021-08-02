@@ -1,5 +1,4 @@
 import React, { memo, useState } from "react"
-// import { AddProductToWishlist } from "./AddProductToWishlist"
 import dynamic from 'next/dynamic'
 import { AddProductToWishlistProps } from "./AddProductToWishlist"
 
